@@ -16,7 +16,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Mail, Github } from "lucide-react";
-import { signinWithGoogle } from "@/lib/actions";
+import { signinWithGoogle, signinWithMagicLink } from "@/lib/actions";
 
 export function LoginForm({
   className,
@@ -59,14 +59,17 @@ export function LoginForm({
     setSuccess(null);
 
     try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email,
-        options: {
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
+      // const { error } = await supabase.auth.signInWithOtp({
+      //   email,
+      //   options: {
+      //     emailRedirectTo: `${window.location.origin}/auth/callback`,
+      //   },
+      // });
+      // if (error) throw error;
+      // setSuccess("Check your email for the magic link!");
+      const {success, error} = await signinWithMagicLink(email);
       if (error) throw error;
-      setSuccess("Check your email for the magic link!");
+      setSuccess(success);
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
@@ -74,21 +77,7 @@ export function LoginForm({
     }
   };
 
-  const handleOAuthLogin = async (provider: "google" | "github") => {
-    // const supabase = createClient();
-    // setError(null);
-    // try {
-    //   const { error } = await supabase.auth.signInWithOAuth({
-    //     provider,
-    //     // options: {
-    //     //   redirectTo: `${window.location.origin}/auth/callback`,
-    //     // },
-    //   });
-    //   if (error) throw error;
-    // } catch (error: unknown) {
-    //   setError(error instanceof Error ? error.message : "An error occurred");
-    // }
-  };
+
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
@@ -132,7 +121,7 @@ export function LoginForm({
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => handleOAuthLogin("github")}
+                onClick={async () => signinWithGoogle()} //todo: signin with github
                 type="button"
               >
                 <Github className="mr-2 h-4 w-4" />

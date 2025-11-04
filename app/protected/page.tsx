@@ -13,14 +13,13 @@ export default async function ProtectedPage() {
     redirect("/auth/login");
   }
 
-  const { name, email, avatar_url, display_name } = data.user.user_metadata;
-    const userName = display_name ? `@${display_name}` : 'User Name Not Set'
-    const app_metadata = data.user.app_metadata;
+  const { name, email, avatar_url } = data.user.user_metadata;
+  const app_metadata = data.user.app_metadata;
 
   const { data: todos, error: todosError } = await supabase
-  .from('todos')
-  .select()
-  console.log(todos)
+    .from("todos")
+    .select();
+  console.log(todos);
 
   return (
     <div className="flex-1 w-full flex flex-col gap-12">
@@ -29,7 +28,7 @@ export default async function ProtectedPage() {
           <InfoIcon size="16" strokeWidth={2} />
           This is a protected page that you can only see as an authenticated
           user
-        </div>  
+        </div>
       </div>
       <div className="flex flex-col gap-2 items-start">
         <h2 className="font-bold text-2xl mb-4">Your user details</h2>
@@ -39,14 +38,13 @@ export default async function ProtectedPage() {
             alt={name}
             width={200}
             height={200}
-            className='rounded-full'
+            className="rounded-full"
             quality={100}
           />
         )}
-          <h1 className='text-4xl font-bold'>{name}</h1>
-        <p className='text-xl'>User Name: {userName}</p>
-        <p className='text-xl'>Email: {email}</p>
-        <p className='text-xl'>Created with: {app_metadata.provider}</p>
+        <h1 className="text-4xl font-bold">{name}</h1>
+        <p className="text-xl">Email: {email}</p>
+        <p className="text-xl">Created with: {app_metadata.provider}</p>
         <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
           {JSON.stringify(data.user, null, 2)}
         </pre>
