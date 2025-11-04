@@ -3,19 +3,23 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { InfoIcon } from "lucide-react";
 import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
+import Image from "next/image";
 
 export default async function ProtectedPage() {
   const supabase = await createClient();
 
-  const { data, error } = await supabase.auth.getClaims();
-  if (error || !data?.claims) {
+  const { data, error } = await supabase.auth.getUser();
+  if (error || !data?.user) {
     redirect("/auth/login");
   }
+
+  const { name, email, avatar_url, display_name } = data.user.user_metadata;
+    const userName = display_name ? `@${display_name}` : 'User Name Not Set'
+    const app_metadata = data.user.app_metadata;
 
   const { data: todos, error: todosError } = await supabase
   .from('todos')
   .select()
-
   console.log(todos)
 
   return (
@@ -25,12 +29,26 @@ export default async function ProtectedPage() {
           <InfoIcon size="16" strokeWidth={2} />
           This is a protected page that you can only see as an authenticated
           user
-        </div>
+        </div>  
       </div>
       <div className="flex flex-col gap-2 items-start">
         <h2 className="font-bold text-2xl mb-4">Your user details</h2>
+        {avatar_url && (
+          <Image
+            src={avatar_url}
+            alt={name}
+            width={200}
+            height={200}
+            className='rounded-full'
+            quality={100}
+          />
+        )}
+          <h1 className='text-4xl font-bold'>{name}</h1>
+        <p className='text-xl'>User Name: {userName}</p>
+        <p className='text-xl'>Email: {email}</p>
+        <p className='text-xl'>Created with: {app_metadata.provider}</p>
         <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
-          {JSON.stringify(data.claims, null, 2)}
+          {JSON.stringify(data.user, null, 2)}
         </pre>
         <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
           {JSON.stringify(todos, null, 2)}

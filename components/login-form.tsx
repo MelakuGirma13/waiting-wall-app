@@ -16,6 +16,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Mail, Github } from "lucide-react";
+import { signinWithGoogle } from "@/lib/actions";
 
 export function LoginForm({
   className,
@@ -74,20 +75,19 @@ export function LoginForm({
   };
 
   const handleOAuthLogin = async (provider: "google" | "github") => {
-    const supabase = createClient();
-    setError(null);
-
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider,
-        options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
-      if (error) throw error;
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred");
-    }
+    // const supabase = createClient();
+    // setError(null);
+    // try {
+    //   const { error } = await supabase.auth.signInWithOAuth({
+    //     provider,
+    //     // options: {
+    //     //   redirectTo: `${window.location.origin}/auth/callback`,
+    //     // },
+    //   });
+    //   if (error) throw error;
+    // } catch (error: unknown) {
+    //   setError(error instanceof Error ? error.message : "An error occurred");
+    // }
   };
 
   return (
@@ -106,7 +106,7 @@ export function LoginForm({
               <Button
                 variant="outline"
                 className="w-full"
-                onClick={() => handleOAuthLogin("google")}
+                onClick={async () => await signinWithGoogle()}
                 type="button"
               >
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
