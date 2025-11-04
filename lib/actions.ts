@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
+//OAuth
 const signInWith = (provider: "google" | "github") => async () => {
   const supabase = await createClient();
 
@@ -17,15 +18,13 @@ const signInWith = (provider: "google" | "github") => async () => {
 
   console.log(data);
 
-  if (error) {
-    console.log(error);
-  }
-
+  if (error) console.log(error);
+  
   redirect(data.url ?? "/"); //redirect to googl's consent screeen.
 };
 const signinWithGoogle = await signInWith("google");
 
-//Magic Link
+//Magic Link OTP
 const signinWithMagicLink = async (email: string) => {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithOtp({
@@ -41,7 +40,6 @@ const signinWithMagicLink = async (email: string) => {
     console.log(error);
     return { success: null, error: error.message };
   }
-
   return { success: "please check your email", error: null };
 };
 
@@ -50,4 +48,4 @@ const signOut = async () => {
   await supabase.auth.signOut();
 };
 
-export { signinWithGoogle, signOut,signinWithMagicLink };
+export { signinWithGoogle, signOut, signinWithMagicLink };

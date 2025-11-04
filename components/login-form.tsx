@@ -53,20 +53,11 @@ export function LoginForm({
 
   const handleMagicLink = async (e: React.FormEvent) => {
     e.preventDefault();
-    const supabase = createClient();
     setIsLoading(true);
     setError(null);
     setSuccess(null);
 
     try {
-      // const { error } = await supabase.auth.signInWithOtp({
-      //   email,
-      //   options: {
-      //     emailRedirectTo: `${window.location.origin}/auth/callback`,
-      //   },
-      // });
-      // if (error) throw error;
-      // setSuccess("Check your email for the magic link!");
       const {success, error} = await signinWithMagicLink(email);
       if (error) throw error;
       setSuccess(success);
