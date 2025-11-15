@@ -1,0 +1,1 @@
+-prepare script to populate model 'User' when new user is registered(with default role.) similar to profile table. 
