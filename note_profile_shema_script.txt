@@ -1,4 +1,5 @@
 -- Create a table for public profiles
+--NB: if your using PrismaORM then you do not crate this table on supabase, instade use prisma schema
 create table profiles (
   id uuid primary key,
   updated_at timestamp with time zone,
