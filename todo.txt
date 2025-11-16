@@ -1,1 +1,1 @@
--prepare script to populate model 'User' when new user is registered(with default role.) similar to profile table. 
+-for user management, i replace 'User' model with 'profiles' table so update the prisma scripts and API's in this project when you copy code from 'user-managment' project

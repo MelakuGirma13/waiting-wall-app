@@ -8,7 +8,7 @@
     eg: public.profiles and auth.users  //since we do not our prismaORM to chane auth.users
         .Supabase managed schemas: Schemas managed by Supabase, such as auth and storage, may be changed to support new features. Referencing these schemas directly will cause schema drift in the future.
 
--> Profile schema to do the configuraton use 'note_profile_shema_script.txt' cusome script
+-> Profile schema and user management to do the configuraton use 'note_profile_shema_script.sql' cusome script
 
 ==prisma Synchronize changes from supabase (migration)
 1. must start from PrismaOrm schema.prisma
