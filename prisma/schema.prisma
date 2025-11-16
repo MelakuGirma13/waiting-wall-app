@@ -9,33 +9,30 @@ datasource db {
   schemas   = ["public"]
 }
 
-/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model profiles {
   id         String    @id @db.Uuid
   updated_at DateTime? @db.Timestamptz(6)
   username   String?   @unique
   full_name  String?
   avatar_url String?
-  website    String?
+  email     String    @unique
+  bio       String?
+  userRoles UserRole[]?
 
   @@schema("public")
 }
 
-// --------------------------------------------
-// USER MANAGEMENT MODELS
-// --------------------------------------------
+model UserRole {
+  id        String   @id @default(cuid())
+  userId    String   @db.Uuid
+  roleId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-model User {
-  id        String    @id @db.Uuid
-  email     String    @unique
-  name      String?
-  bio       String?
-  image     String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  userRoles UserRole[]
+  profiles      profiles     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
+  @@unique([userId, roleId])
   @@schema("public")
 }
 
@@ -61,21 +58,6 @@ model Permission {
 
   @@schema("public")
 }
-
-model UserRole {
-  id        String   @id @default(cuid())
-  userId    String   @db.Uuid
-  roleId    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, roleId])
-  @@schema("public")
-}
-
 
 model RolePermission {
   id           String     @id @default(cuid())

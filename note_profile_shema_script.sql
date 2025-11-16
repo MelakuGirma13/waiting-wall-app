@@ -1,16 +1,4 @@
--- Create a table for public profiles
---NB: if your using PrismaORM then you do not crate this table on supabase, instade use prisma schema
-create table profiles (
-  id uuid primary key,
-  updated_at timestamp with time zone,
-  username text unique,
-  full_name text,
-  avatar_url text,
-  website text,
-
-  constraint username_length check (char_length(username) >= 3)
-);
-
+--NB: create profiles table from prisma
 
 -- Set up Row Level Security (RLS)
 -- See https://supabase.com/docs/guides/auth/row-level-security for more details.
@@ -65,8 +53,8 @@ as $$
 begin
 
   -- Insert the new user's data into the 'profiles' table
-  insert into public.profiles (id, username,full_name,avatar_url,website)
-  values (new.id, new.username, new.full_name, new.avatar_url, new.website);
+  insert into public.profiles  (id, username,full_name,avatar_url,email,bio)
+  values (new.id, new.username, new.full_name, new.avatar_url, new.email, new.bio);
 
   return new;     -- Return the new record
 end;
@@ -82,10 +70,11 @@ $$
 begin
   -- Update the user's data in the 'profiles' table
   update public.profiles
-  set username = new.username     -- Update the 'username' field
-  set full_name = new.full_name
-  set avatar_url = new.avatar_url
-  set website = new.website
+  set username = new.username,     
+   full_name = new.full_name,
+   avatar_url = new.avatar_url,
+   email = new.email,
+   bio = new.bio
   where id = new.id;        -- Match the 'id' field with the new record
 
   return new;  -- Return the new record
