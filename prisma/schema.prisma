@@ -15,9 +15,9 @@ model profiles {
   username   String?   @unique
   full_name  String?
   avatar_url String?
-  email     String    @unique
+  email     String?   @unique
   bio       String?
-  userRoles UserRole[]?
+  userRoles UserRole[]
 
   @@schema("public")
 }
