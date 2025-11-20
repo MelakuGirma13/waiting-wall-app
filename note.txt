@@ -1,8 +1,8 @@
-==connection prisma ORM with supabase==
+# connection prisma ORM with supabase==
 -> https://supabase.com/docs/guides/database/prisma
 -> 
 
-==Cross schema references 
+## Cross schema references 
 ->https://supabase.com/docs/guides/database/prisma/prisma-troubleshooting#cross-schema-references-are-only-allowed-when-the-target-schema-is-listed-in-the-schemas-property-of-your-data-source
 -when there is relation bitween two table in different schema
     eg: public.profiles and auth.users  //since we do not our prismaORM to chane auth.users
@@ -10,7 +10,7 @@
 
 -> Profile schema and user management to do the configuraton use 'note_profile_shema_script.sql' cusome script
 
-==prisma Synchronize changes from supabase (migration)
+## prisma Synchronize changes from supabase (migration)
 1. must start from PrismaOrm schema.prisma
 2. mkdir -p prisma/migrations/0_init_supabase //Create a migration file //manual folder migration cration // creted once
 3. npx prisma migrate diff \
@@ -24,8 +24,7 @@
             --script > prisma/migrations/0_init_supabase/migration.sql
 4. npx prisma migrate dev --name <name> //updates(sync) supabase and prisma 
 
-== pull from supabase (NB: you will loose migration histry if exist)
-# 1. npx prisma format
-# 2. npx prisma db pull //Pull existing Supabase schema (optional but recommended)
-# 3. the pulled model contains row level security and requires additional setup for migrations. Visit https://pris.
-==
+## pull from supabase (NB: you will loose migration histry if exist)
+ 1. npx prisma format
+ 2. npx prisma db pull //Pull existing Supabase schema (optional but recommended)
+ 3. the pulled model contains row level security and requires additional setup for migrations. Visit https://pris.
