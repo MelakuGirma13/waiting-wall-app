@@ -1,3 +1,4 @@
+
 import { DeployButton } from "@/components/deploy-button";
 import { EnvVarWarning } from "@/components/env-var-warning";
 import { AuthButton } from "@/components/auth-button";
@@ -7,8 +8,11 @@ import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-ste
 import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
 import { hasEnvVars } from "@/lib/utils";
 import Link from "next/link";
+import { getOrCreateAnonymousUser } from "@/lib/actions";
 
-export default function Home() {
+export default async function Home() {
+   const user = await getOrCreateAnonymousUser();
+   
   return (
     <main className="min-h-screen flex flex-col items-center">
       <div className="flex-1 w-full flex flex-col gap-20 items-center">
@@ -18,6 +22,7 @@ export default function Home() {
               <Link href={"/"}>Next.js Supabase Starter</Link>
               <div className="flex items-center gap-2">
                 <DeployButton />
+               
               </div>
             </div>
             {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}

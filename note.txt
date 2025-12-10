@@ -9,6 +9,7 @@
         .Supabase managed schemas: Schemas managed by Supabase, such as auth and storage, may be changed to support new features. Referencing these schemas directly will cause schema drift in the future.
 
 -> Profile schema and user management to do the configuraton use 'note_profile_shema_script.sql' cusome script
+-> if you want to support Anonymus future, update 'note_profile_shema_script.sql' with 'note_profile_shema_script.sql.sql'
 
 ## prisma Synchronize changes from supabase (migration)
 1. must start from PrismaOrm schema.prisma
@@ -25,6 +26,6 @@
 4. npx prisma migrate dev --name <name> //updates(sync) supabase and prisma 
 
 ## pull from supabase (NB: you will loose migration histry if exist)
- 1. npx prisma format
- 2. npx prisma db pull //Pull existing Supabase schema (optional but recommended)
+ 1. npx prisma format //format the schema //warning
+ 2. npx prisma db pull //Pull existing Supabase schema (will reset if you have local shema)
  3. the pulled model contains row level security and requires additional setup for migrations. Visit https://pris.
